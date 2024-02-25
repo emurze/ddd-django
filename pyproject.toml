@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "drf"
+version = "0.1.0"
+description = ""
+authors = ["emurze <grayemurze@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^5.0.2"
+psycopg2-binary = "^2.9.9"
+uvicorn = "^0.27.1"
+djangorestframework = "^3.14.0"
+pytest = "^8.0.1"
+mypy = "^1.8.0"
+black = "^24.2.0"
+flake8 = "^7.0.0"
+pytest-asyncio = "^0.23.5"
+django-stubs = "^4.2.7"
+pytest-django = "^4.8.0"
+drf-spectacular = "^0.27.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

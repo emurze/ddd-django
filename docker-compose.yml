@@ -1,0 +1,59 @@
+version: "3.8"
+services:
+  db:
+    image: 'postgres:16'
+    container_name: 'drf.db'
+    networks:
+      - drf.backend
+    env_file: ./.env/.db.env
+    volumes:
+      - drf.postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'
+    restart: unless-stopped
+
+  api:
+    build: .
+    container_name: 'drf.api'
+    image: 'drf.api:1'
+    command: >
+      sh -c 'cd src &&
+             poetry run python3 manage.py migrate --no-input &&
+             poetry run python3 manage.py collectstatic --noinput &&
+             poetry run uvicorn config.asgi:app --host 0.0.0.0 --port 8080 --reload --lifespan "off"'
+    networks:
+      - drf.backend
+    ports:
+      - '8081:8080'
+    env_file: ./.env/.drf.env
+    volumes:
+      - ./src:/service/src
+      - ./tests:/service/tests
+      - drf.app_static:/service/src/static
+      - drf.app_media:/service/src/media
+    restart: unless-stopped
+    depends_on:
+      - db
+
+  web_server:
+    image: 'nginx:alpine3.18'
+    container_name: 'drf.web_server'
+    networks:
+      - drf.backend
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/nginx.conf
+      - drf.app_static:/srv/static
+      - drf.app_media:/srv/media
+    ports:
+      - '81:80'
+    restart: unless-stopped
+    depends_on:
+      - api
+
+networks:
+  drf.backend:
+
+volumes:
+  drf.postgres_data:
+  drf.app_static:
+  drf.app_media:
