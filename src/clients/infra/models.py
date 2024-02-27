@@ -11,3 +11,4 @@ class ClientModel(AbstractUser):
 
     class Meta:
         db_table = "client"
+        app_label = "app"

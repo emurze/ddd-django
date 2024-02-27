@@ -18,7 +18,6 @@ services:
     image: 'drf.api:1'
     command: >
       sh -c 'cd src &&
-             poetry run python3 manage.py makemigrations &&
              poetry run python3 manage.py migrate --no-input &&
              poetry run python3 manage.py collectstatic --noinput &&
              poetry run uvicorn main:app --host 0.0.0.0 --port 8080 --reload --lifespan "off"'
@@ -51,43 +50,42 @@ services:
     depends_on:
       - api
 
-#  cache:
-#    image: 'redis:7'
-#    container_name: 'drf.cache'
-#    networks:
-#      - drf.backend
-#    volumes:
-#      - drf.cache_data:/data
-#      - ./cache/redis.conf:/etc/redis.conf
-#    restart: unless-stopped
-#
-#  pub_sub:
-#    image: 'redis:7'
-#    container_name: 'drf.pub_sub'
-#    networks:
-#      - drf.backend
-#    volumes:
-#      - drf.pub_sub_data:/data
-#    restart: unless-stopped
-#
-#  worker1:
-#    build: .
-#    container_name: 'drf.worker1'
-#    image: 'drf.api:1'
-#    command: >
-#      sh -c "cd src &&
-#             poetry run celery -A config.celery.app worker --loglevel=info
-#                                                           --uid = user"
-#    networks:
-#      - drf.backend
-#    volumes:
-#      - ./src:/service/src
-#      - drf.app_static:/service/src/data/static
-#      - drf.app_media:/service/src/data/media
-#    env_file: .env/.drf.env
-#    restart: unless-stopped
-#    depends_on:
-#      - pub_sub
+  cache:
+    image: 'redis:7'
+    container_name: 'drf.cache'
+    networks:
+      - drf.backend
+    volumes:
+      - drf.cache_data:/data
+      - ./src/shared/infra/redis/cache/conf/redis.conf:/etc/redis.conf
+    restart: unless-stopped
+
+  pub_sub:
+    image: 'redis:7'
+    container_name: 'drf.pub_sub'
+    networks:
+      - drf.backend
+    volumes:
+      - drf.pub_sub_data:/data
+    restart: unless-stopped
+
+  worker1:
+    build: .
+    container_name: 'drf.worker1'
+    image: 'drf.api:1'
+    command: >
+      sh -c "cd src &&
+             poetry run celery -A worker.app worker --loglevel=INFO"
+    networks:
+      - drf.backend
+    volumes:
+      - ./src:/service/src
+      - drf.app_static:/service/src/shared/infra/django/data/static
+      - drf.app_media:/service/src/shared/infra/django/data/media
+    env_file: .env/.drf.env
+    restart: unless-stopped
+    depends_on:
+      - pub_sub
 
 networks:
   drf.backend:

@@ -1,23 +1,25 @@
 import os
-from .base import BASE_DIR
+from .base import DATA_DIR
+
+LOG_LEVEL = os.getenv("LOGGING_LEVEL", "WARNING")
 
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "handlers": {
         "file": {
-            "level": os.getenv("LOGGING_LEVEL"),
+            "level": LOG_LEVEL,
             "class": "logging.FileHandler",
-            "filename": BASE_DIR / "shared/infra/django/data/logs/general.log",
+            "filename": DATA_DIR / "logs/general.log",
         },
         "stream": {
-            "level": os.getenv("LOGGING_LEVEL"),
+            "level": LOG_LEVEL,
             "class": "logging.StreamHandler",
         },
     },
     "loggers": {
         "": {
-            "level": os.getenv("LOGGING_LEVEL"),
+            "level": LOG_LEVEL,
             "handlers": [
                 "stream",
                 "file",

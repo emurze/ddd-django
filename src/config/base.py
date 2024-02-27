@@ -3,6 +3,8 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DATA_DIR = BASE_DIR / "shared/infra/django/data"
+
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = bool(int(os.getenv("DEBUG", 1)))
@@ -33,11 +35,16 @@ ASGI_APPLICATION = 'main.app'
 
 ROOT_URLCONF = 'routers'
 
+EXCLUDE_MODELS_SEARCH_PATHS = [
+    "shared",
+    "config",
+]
+
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "shared.infra.django.data.static"
+STATIC_ROOT = DATA_DIR / "static"
 
 MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "shared.infra.django.data.media"
+MEDIA_ROOT = DATA_DIR / "media"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

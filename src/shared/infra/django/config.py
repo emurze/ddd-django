@@ -1,5 +1,6 @@
-from shared.infra.django.app_config import FlexibleAppConfig
+from django.apps import AppConfig
 
 
-class DjangoConfig(FlexibleAppConfig):
+class DjangoConfig(AppConfig):
     name = "shared.infra.django"
+    label = "app"

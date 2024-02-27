@@ -15,10 +15,16 @@ define docker_row_exec
 endef
 
 
-# Run
+# On / Off
 
 run:
 	docker compose up --build
+
+down:
+	docker compose down
+
+clean:
+	docker compose down -v
 
 
 # Migrations
@@ -42,12 +48,12 @@ black:
 	poetry run black . -l 79 tests src
 
 lint:
-	poetry run flake8 --config setup.cfg src tests
+	$(call docker_exec,poetry run flake8 --config setup.cfg src tests)
 
 typechecks:
-	cd src && poetry run mypy --config ../setup.cfg .
+	$(call docker_exec,poetry run mypy --config setup.cfg src tests)
 
 integration_tests:
-	$(call docker_exec,poetry run pytest -s -vv src/apps/)
+	$(call docker_exec,poetry run pytest -s -v tests)
 
 test: lint typechecks integration_tests

@@ -1,6 +1,6 @@
-from config.auth import *
-from config.base import *
-from config.cache import *
-from config.databases import *
-from config.logging import *
-from config.rest import *
+from config.auth import *  # noqa
+from config.base import *  # noqa
+from config.cache import *  # noqa
+from config.databases import *  # noqa
+from config.logging import *  # noqa
+from config.rest import *  # noqa

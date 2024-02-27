@@ -1,9 +1,12 @@
-# DRF Architecture
+### DRF Architecture
 
-* tests/ - e2e tests
+* Single app project because of migration foreign key problems when large project
 
-* app/tests - integration tests
+* Use django view classes, but if you have business logic then divide views on 
+Presentation and Use Case layers. 
 
-* UseCase | Presentation if Business Logic then divide
+* Use only coupled settings in config for django features, if you have 
+independent infrastructure module like Redis Recommendation System then 
+use local config
 
-* Django is synchronous because of Class Bases Views, use Celery
+
