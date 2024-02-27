@@ -6,6 +6,8 @@
 
 * Repository Layer  # .save() - Create, .data - Get, List
 
+* UseCase Layer  # .save() - Create
+
 * Domain Layer  # .save() - Update
 
 ### Model

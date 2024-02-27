@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 from .base import BASE_DIR
 
 LOGGING = {
@@ -9,7 +8,7 @@ LOGGING = {
         "file": {
             "level": os.getenv("LOGGING_LEVEL"),
             "class": "logging.FileHandler",
-            "filename": Path(BASE_DIR, "logs", "general.log"),
+            "filename": BASE_DIR / "shared/infra/django/data/logs/general.log",
         },
         "stream": {
             "level": os.getenv("LOGGING_LEVEL"),

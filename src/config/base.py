@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
@@ -21,8 +21,23 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'rest_framework',
     'drf_spectacular',
-
+    'rest_framework_simplejwt',
+    'shared.infra.django.config.DjangoConfig',
 ]
+
+MIGRATION_MODULES = {
+    'app': 'shared.infra.django.migrations',
+}
+
+ASGI_APPLICATION = 'main.app'
+
+ROOT_URLCONF = 'routers'
+
+STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "shared.infra.django.data.static"
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "shared.infra.django.data.media"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -49,22 +64,8 @@ TEMPLATES = [
     },
 ]
 
-ROOT_URLCONF = 'config.urls'
-
-STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "static"
-
-MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"
-
-ASGI_APPLICATION = 'config.asgi.app'
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_TZ = True
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CELERY_BROKER_URL = 'redis://pub_sub:6379/0'
+
+RESULT_BACKEND_URL = 'redis://pub_sub:6379/1'
