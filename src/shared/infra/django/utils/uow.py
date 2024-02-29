@@ -1,0 +1,4 @@
+
+
+class DjangoGenericUnitOfWork:
+    pass

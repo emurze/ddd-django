@@ -1,10 +1,9 @@
-from collections.abc import Iterator
-from dataclasses import dataclass
-from typing import Self, Any
+from dataclasses import dataclass, fields
+from typing import Self
 
 from django.db import transaction
 
-from auth.application.ports import IAuthUnitOfWork, IClientRepository
+from auth.application.ports.driven import IClientRepository, IAuthUnitOfWork
 
 
 @dataclass(frozen=True, slots=True)
@@ -20,16 +19,7 @@ class DjangoAuthUnitOfWork(IAuthUnitOfWork):
         transaction.set_autocommit(True)
 
     def commit(self) -> None:
-        print([*self.repos])
-        for repo in self.repos:
-            for model in repo.seen:
-                repo.update_from_domain(model)
-
         transaction.commit()
 
     def rollback(self) -> None:
         transaction.rollback()
-
-    @property
-    def repos(self) -> list:
-        return [self.clients]

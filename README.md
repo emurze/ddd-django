@@ -11,6 +11,12 @@ use local config.
 
 ### Spaces
 
+* Relationships:
+    - OneToOne - select
+    - OneToMany - prefetch
+    - ManyToOne - select
+    - ManyToMany - prefetch
+
 * Validation:
     - Django - form.is_valid() or model.full_clean()
     - DRF - serializer.is_valid() or model.full_clean()
@@ -19,3 +25,11 @@ use local config.
 * Examples  ###################
 
 ### Domain Entities with Django
+
+........
+
+### Endpoints DRF and FastAPI way where:
+
+* fastapi way is custom logic
+
+* DRF is just django views

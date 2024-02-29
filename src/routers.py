@@ -8,7 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Clients
-    path('', include("auth.external_interface.router")),
+    path('', include("auth.presentation.router")),
 
     # # Login
     # path('session/',

@@ -1,0 +1,4 @@
+
+
+class DjangoGenericRepository:
+    pass

@@ -2,7 +2,7 @@ import abc
 
 
 class IClientRepository(abc.ABC):
-    seen: set
+    modified_models: set
 
     @abc.abstractmethod
     def add(self, **kw): ...
@@ -13,11 +13,8 @@ class IClientRepository(abc.ABC):
     @abc.abstractmethod
     def list(self): ...
 
-    # @abc.abstractmethod
-    # def delete(self, **kw): ...
-
     @abc.abstractmethod
-    def update_from_domain(self, objects): ...
+    def delete(self, **kw): ...
 
 
 class IAuthUnitOfWork(abc.ABC):

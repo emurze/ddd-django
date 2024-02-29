@@ -6,3 +6,7 @@ class Model(BaseModel):
 
     def as_dict(self) -> dict:
         return self.model_dump()
+
+
+class Entity:
+    pass

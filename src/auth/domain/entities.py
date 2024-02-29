@@ -11,9 +11,12 @@ class Client(Model):
     password: str
     first_name: str
     last_name: str
-    date_joined: datetime
     description: Optional[str] = None
+
+    # Name Business Rule, implement in Infrastructure
+    date_joined: datetime
     last_login: Optional[datetime] = None
+
     is_staff: bool = False
     is_active: bool = True
 
