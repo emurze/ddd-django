@@ -53,6 +53,7 @@ services:
   cache:
     image: 'redis:7'
     container_name: 'drf.cache'
+    command: redis-server /etc/redis.conf
     networks:
       - drf.backend
     volumes:
@@ -60,39 +61,41 @@ services:
       - ./src/shared/infra/redis/cache/conf/redis.conf:/etc/redis.conf
     restart: unless-stopped
 
-  pub_sub:
-    image: 'redis:7'
-    container_name: 'drf.pub_sub'
-    networks:
-      - drf.backend
-    volumes:
-      - drf.pub_sub_data:/data
-    restart: unless-stopped
-
-  worker1:
-    build: .
-    container_name: 'drf.worker1'
-    image: 'drf.api:1'
-    command: >
-      sh -c "cd src &&
-             poetry run celery -A worker.app worker --loglevel=INFO"
-    networks:
-      - drf.backend
-    volumes:
-      - ./src:/service/src
-      - drf.app_static:/service/src/shared/infra/django/data/static
-      - drf.app_media:/service/src/shared/infra/django/data/media
-    env_file: .env/.drf.env
-    restart: unless-stopped
-    depends_on:
-      - pub_sub
+#  pubsub:
+#    image: 'redis:7'
+#    container_name: 'drf.pubsub'
+#    command: redis-server /etc/redis.conf
+#    networks:
+#      - drf.backend
+#    volumes:
+#      - drf.pubsub_data:/data
+#      - ./src/shared/infra/redis/pubsub/conf/redis.conf:/etc/redis.conf
+#    restart: unless-stopped
+#
+#  worker1:
+#    build: .
+#    container_name: 'drf.worker1'
+#    image: 'drf.api:1'
+#    command: >
+#      sh -c "cd src &&
+#             poetry run celery -A worker.app worker --loglevel=INFO"
+#    networks:
+#      - drf.backend
+#    volumes:
+#      - ./src:/service/src
+#      - drf.app_static:/service/src/shared/infra/django/data/static
+#      - drf.app_media:/service/src/shared/infra/django/data/media
+#    env_file: .env/.drf.env
+#    restart: unless-stopped
+#    depends_on:
+#      - pubsub
 
 networks:
   drf.backend:
 
 volumes:
   drf.postgres_data:
-  drf.pub_sub_data:
+  drf.pubsub_data:
   drf.cache_data:
   drf.app_static:
   drf.app_media:

@@ -2,13 +2,13 @@ import os
 
 from celery import Celery
 
-from django.conf import settings
+from shared.infra.celery import config
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config')
 
 app = Celery(
     'tasks',
-    broker=settings.CELERY_BROKER_URL,
-    backend=settings.RESULT_BACKEND_URL,
+    broker=config.CELERY_BROKER_URL,
+    backend=config.RESULT_BACKEND_URL,
 )
 app.autodiscover_tasks()

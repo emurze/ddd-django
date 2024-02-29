@@ -1,5 +1,5 @@
 
-AUTH_USER_MODEL = 'app.ClientModel'
+AUTH_USER_MODEL = 'apps.ClientModel'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

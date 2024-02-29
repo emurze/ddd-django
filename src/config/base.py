@@ -14,6 +14,7 @@ ALLOWED_HOSTS = [
 ]
 
 INSTALLED_APPS = [
+    'shared.infra.django.config.DjangoConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -24,21 +25,15 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     'rest_framework_simplejwt',
-    'shared.infra.django.config.DjangoConfig',
 ]
 
 MIGRATION_MODULES = {
-    'app': 'shared.infra.django.migrations',
+    'apps': 'shared.infra.django.migrations',
 }
 
 ASGI_APPLICATION = 'main.app'
 
 ROOT_URLCONF = 'routers'
-
-EXCLUDE_MODELS_SEARCH_PATHS = [
-    "shared",
-    "config",
-]
 
 STATIC_URL = "static/"
 STATIC_ROOT = DATA_DIR / "static"
@@ -72,7 +67,3 @@ TEMPLATES = [
 ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-CELERY_BROKER_URL = 'redis://pub_sub:6379/0'
-
-RESULT_BACKEND_URL = 'redis://pub_sub:6379/1'

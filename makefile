@@ -51,7 +51,7 @@ lint:
 	$(call docker_exec,poetry run flake8 --config setup.cfg src tests)
 
 typechecks:
-	$(call docker_exec,poetry run mypy --config setup.cfg src tests)
+	$(call docker_exec,cd src && poetry run mypy --config ../setup.cfg .)
 
 integration_tests:
 	$(call docker_exec,poetry run pytest -s -v tests)
