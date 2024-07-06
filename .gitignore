@@ -2,6 +2,11 @@
 *.idea
 .idea
 
+# django
+static
+media
+
+
 # venv
 *venv
 venv
