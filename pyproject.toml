@@ -1,28 +1,63 @@
 [tool.poetry]
-name = "drf"
+name = "new-online-shop"
 version = "0.1.0"
 description = ""
-authors = ["emurze <grayemurze@gmail.com>"]
+authors = ["Emurze <rozanov7475@yandex.by>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.11"
-django = "^5.0.2"
-psycopg2-binary = "^2.9.9"
-uvicorn = "^0.27.1"
-djangorestframework = "^3.14.0"
-pytest = "^8.0.1"
-mypy = "^1.8.0"
-black = "^24.2.0"
-flake8 = "^7.0.0"
-pytest-asyncio = "^0.23.5"
-django-stubs = "^4.2.7"
+python = "^3.12"
+django = "^5.0.6"
+uvicorn = "^0.30.1"
+django-autoslug = "^1.9.9"
+django-rest-framework = "^0.1.0"
+django-filter = "^24.2"
+python-dotenv = "^1.0.1"
+injector = "^0.21.0"
+
+[tool.poetry.dev-dependencies]
+poethepoet = "^0.26.1"
+pytest = "^8.2.2"
 pytest-django = "^4.8.0"
-drf-spectacular = "^0.27.1"
-djangorestframework-simplejwt = "^5.3.1"
-celery = "^5.3.6"
-redis = "^5.0.1"
-pydantic = "^2.6.2"
+pytest-asyncio = "^0.23.7"
+faker = "^26.0.0"
+black = "^24.4.2"
+
+[tool.poe.env]
+DC = "docker compose"
+EXEC = "docker exec -it"
+APP_CONTAINER = "main-app"
+PYTHONPATH = "src"
+
+[tool.poe.tasks]
+# Default
+start   = "uvicorn project.asgi:application --reload --host 0.0.0.0 --port 8080"
+test    = "pytest"
+
+# Container
+up      = "$DC  up --build -d"
+logs    = "$DC logs -f $APP_CONTAINER"
+#test    = "$EXEC $APP_CONTAINER pytest"
+shell   = "$EXEC $APP_CONTAINER bash"
+
+[tool.black]
+line-length = 79
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "project.settings"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+pythonpath = [".", "src"]
+addopts = ["-rsxX", "-l", "--tb=short", "--strict-markers", "-s"]
+xfail_strict = true
+cache_dir = ".venv/cache/pytest"
+asyncio_mode = "auto"
+markers = [
+    "unit: marks test as unit test i.e. not using any external services (deselect with '-m \"not unit\"')",
+    "integration: marks tests as integration i.e. using a database (deselect with '-m \"not integration\"')",
+    "e2e: marks tests as e2e tests i.e. using a client api and a database (deselect with '-m \"not e2e\"')",
+    "marked: just marked"
+]
 
 
 [build-system]
